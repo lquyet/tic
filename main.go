@@ -95,6 +95,11 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	// Health check
+	e.GET("/health", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK")
+	})
+
 	// Routes
 	e.GET("/users", getUsers)
 	e.POST("/users", upsertUser)
