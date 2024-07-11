@@ -1,0 +1,44 @@
+# API Documentation
+
+## Health Check
+
+- **Endpoint:** `/health`
+- **Method:** `GET`
+- **Description:** Checks the health of the server.
+- **Response:** A string "OK" if the server is running properly.
+
+## Get Users
+
+- **Endpoint:** `/users`
+- **Method:** `GET`
+- **Description:** Retrieves a list of users. Supports pagination through query parameters.
+- **Query Parameters:**
+    - `page`: The page number (optional).
+    - `pageSize`: The number of users per page (optional).
+- **Response:** A JSON array of users.
+
+## Upsert User
+
+- **Endpoint:** `/users`
+- **Method:** `POST`
+- **Description:** Inserts a new user or updates an existing user.
+- **Request Body:** A JSON object representing a user.
+- **Response:** A JSON object representing the created or updated user.
+
+## Delete User
+
+- **Endpoint:** `/users/:id`
+- **Method:** `DELETE`
+- **Description:** Deletes a user by ID.
+- **Path Parameters:**
+    - `id`: The ID of the user to delete.
+- **Response:** A string "User deleted" if the user was deleted, or "User not found" if no user with the given ID exists.
+
+## Reset User Data
+
+- **Endpoint:** `/users/reset`
+- **Method:** `POST`
+- **Description:** Resets the user data by generating a new set of mock users.
+- **Query Parameters:**
+    - `num`: The number of mock users to generate (optional, default is 10).
+- **Response:** A string "Data reset".
