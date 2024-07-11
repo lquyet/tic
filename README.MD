@@ -30,7 +30,7 @@
 - **Endpoint:** `/users`
 - **Method:** `POST`
 - **Description:** Inserts a new user or updates an existing user.
-- **Request Body:** A JSON object representing a user.
+- **Request Body:** A JSON object representing a user. A new user is created if its ID is not provided, otherwise an existing user is updated.
 - **Response:** A JSON object representing the created or updated user.
 
 ## Delete User

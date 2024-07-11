@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bxcodec/faker"
+	"github.com/go-faker/faker/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"net/http"
@@ -46,11 +46,15 @@ func upsertUser(c echo.Context) error {
 		return err
 	}
 
-	for i, u := range users {
-		if u.ID == user.ID {
-			users[i] = user
-			return c.JSON(http.StatusOK, user)
+	if user.ID != "" {
+		for i, u := range users {
+			if u.ID == user.ID {
+				users[i] = user
+				return c.JSON(http.StatusOK, user)
+			}
 		}
+	} else {
+		user.ID = faker.UUIDDigit()
 	}
 
 	users = append(users, user)
