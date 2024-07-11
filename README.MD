@@ -7,6 +7,14 @@
 - **Description:** Checks the health of the server.
 - **Response:** A string "OK" if the server is running properly.
 
+## User Model
+
+- **ID:** A unique identifier for the user. It is a string that follows the UUID format.
+- **Name:** The name of the user. It is a string.
+- **Email:** The email address of the user. It is a string that follows the email format.
+- **Phone:** The phone number of the user. It is a string.
+- **CreditCardNumber:** The credit card number of the user. It is a string.
+
 ## Get Users
 
 - **Endpoint:** `/users`
@@ -42,3 +50,4 @@
 - **Query Parameters:**
     - `num`: The number of mock users to generate (optional, default is 10).
 - **Response:** A string "Data reset".
+
