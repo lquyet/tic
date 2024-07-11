@@ -1,6 +1,6 @@
 module demo
 
-go 1.22
+go 1.21
 
 require (
 	github.com/bxcodec/faker v2.0.1+incompatible
