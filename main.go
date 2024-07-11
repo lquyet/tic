@@ -91,6 +91,7 @@ func main() {
 	users = generateMockUsers(10)
 
 	// Middleware
+	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
