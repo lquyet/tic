@@ -1,19 +1,37 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-faker/faker/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"math/rand"
 	"net/http"
 	"strconv"
 )
 
 type User struct {
-	ID               string `faker:"uuid_digit"`
-	Name             string `faker:"name"`
-	Email            string `faker:"email"`
-	Phone            string `faker:"phone_number"`
-	CreditCardNumber string `faker:"cc_number"`
+	ID               string `json:"id" faker:"uuid_digit"`
+	Name             string `json:"name" faker:"name"`
+	Email            string `json:"email" faker:"email"`
+	Phone            string `json:"phone" faker:"phone_number"`
+	CreditCardNumber string `json:"creditCardNumber" faker:"cc_number"`
+	Avatar           string `json:"avatar"`
+	JoinedDate       int64  `json:"joinedDate" faker:"unix_time"`
+	Age              int    `json:"age" faker:"oneof:18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33"`
+}
+
+type Pagination struct {
+	Page     int `json:"page"`
+	PageSize int `json:"pageSize"`
+	Total    int `json:"total"`
+}
+
+// text, number, date-time (unix time in second), link url
+
+type GetUsersResponse struct {
+	Data       []User     `json:"data"`
+	Pagination Pagination `json:"pagination"`
 }
 
 func generateMockUsers(n int) []User {
@@ -24,6 +42,8 @@ func generateMockUsers(n int) []User {
 		if err != nil {
 			return nil
 		}
+
+		sample.Avatar = fmt.Sprintf("https://picsum.photos/id/%d/300/200", rand.Intn(99)+1)
 		data = append(data, sample)
 	}
 	return data
@@ -35,9 +55,27 @@ func getUsers(c echo.Context) error {
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	pageSize, _ := strconv.Atoi(c.QueryParam("pageSize"))
 	if page != 0 && pageSize != 0 {
-		return c.JSON(http.StatusOK, users[(page-1)*pageSize:page*pageSize])
+		queriedUsers := users[(page-1)*pageSize : page*pageSize]
+		res := GetUsersResponse{
+			Data: queriedUsers,
+			Pagination: Pagination{
+				Page:     page,
+				PageSize: pageSize,
+				Total:    len(users),
+			},
+		}
+
+		return c.JSON(http.StatusOK, res)
 	}
-	return c.JSON(http.StatusOK, users)
+
+	return c.JSON(http.StatusOK, GetUsersResponse{
+		Data: users,
+		Pagination: Pagination{
+			Page:     1,
+			PageSize: len(users),
+			Total:    len(users),
+		},
+	})
 }
 
 func upsertUser(c echo.Context) error {
